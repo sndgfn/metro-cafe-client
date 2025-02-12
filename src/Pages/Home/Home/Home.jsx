@@ -1,11 +1,15 @@
+import Banner from "../Banner/Banner";
+import Category from "../Category/Category"
+import Test from "../Test/Test";
 
 
 const Home = () => {
     return (
-        <div>
-            <h2 className="text-9xl text-red-800">big home </h2>
-            <h2 className="text-9xl text-red-800">big home </h2>
-            <h2 className="text-9xl text-red-800">big home </h2>
+        <div className="" >
+            <Banner></Banner>
+            <Test></Test>    
+            {/* test folder is not working */}
+            <Category></Category>
         </div>
     );
 };
