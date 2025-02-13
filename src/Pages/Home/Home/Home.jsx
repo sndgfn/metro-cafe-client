@@ -10,6 +10,7 @@ const Home = () => {
             <Test></Test>    
             {/* test folder is not working */}
             <Category></Category>
+            {/* <Category></Category> */}
         </div>
     );
 };
