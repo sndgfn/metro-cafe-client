@@ -1,16 +1,50 @@
 import { useContext } from "react";
 import { useForm } from "react-hook-form";
 import { AuthContext } from "../../Providers/AuthProvider"; // Ensure path is correct
+import useAxiosPublic from "../../hooks/useAxiosPublic";
+import Swal from "sweetalert2";
+// import { useNavigate } from "react";
 
 const SignUp = () => {
   const { register, handleSubmit, reset, formState: { errors } } = useForm();
-  const { createUser } = useContext(AuthContext);  // Accessing createUser from context
+  const { createUser, updateUserProfile } = useContext(AuthContext);  // Accessing createUser from context
+  const axiosPublic = useAxiosPublic()
+  // const navigate = useNavigate()
+
+
 
   const onSubmit = (data) => {
     console.log(data);
     createUser(data.email, data.password)
-      .then(result => console.log(result))
-      .catch(error => console.log(error));
+    .then(() => {
+      const userInfo = {
+        name: data.name,
+        email: data.email
+      }
+      axiosPublic.post('/users', userInfo)
+        .then(res => {
+          if (res.data.insertedId) {
+            reset();
+            console.log('user created successfully')
+            Swal.fire({
+              position: 'top-end',
+              icon: 'success',
+              title: 'user created successfully',
+              showConfirmButton: false,
+              timer: 1500
+            })
+          }
+        })
+        .catch(error => console.log(error))
+      // navigate('/')
+
+
+    })
+      // .then(result => {
+      //   // console.log(loggedUser) = result.user;
+      //   // updateUserProfile(data.name, data.photoURL)
+         
+      // })
   };
 
   return (
