@@ -13,39 +13,81 @@ const SignUp = () => {
 
 
 
-  const onSubmit = (data) => {
-    console.log(data);
-    createUser(data.email, data.password)
-    .then(() => {
-      const userInfo = {
-        name: data.name,
-        email: data.email
-      }
-      axiosPublic.post('/users', userInfo)
-        .then(res => {
-          if (res.data.insertedId) {
-            reset();
-            console.log('user created successfully')
-            Swal.fire({
-              position: 'top-end',
-              icon: 'success',
-              title: 'user created successfully',
-              showConfirmButton: false,
-              timer: 1500
-            })
-          }
-        })
-        .catch(error => console.log(error))
-      // navigate('/')
 
 
-    })
-      // .then(result => {
-      //   // console.log(loggedUser) = result.user;
-      //   // updateUserProfile(data.name, data.photoURL)
-         
-      // })
-  };
+//   const onSubmit = data => {
+//     console.log(data);
+//     createUser(data.email, data.password)
+//         .then(result => {
+//             const loggedUser = result.user;
+//             // console.log(loggedUser);
+//             updateUserProfile(data.name, data.photoURL)
+//                 .then(() => {
+//                     // create user entry in the database  
+//                     const userInfo = {
+//                         name: data.name,
+//                         email: data.email
+//                     }
+//                     axiosPublic.post('/users', userInfo)
+//                         .then(res => {
+//                             if (res.data.insertedId) {
+//                                 reset();
+//                                 console.log('user created successfully')
+//                                 Swal.fire({
+//                                     position: 'top-end',
+//                                     icon: 'success',
+//                                     title: 'user created successfully',
+//                                     showConfirmButton: false,
+//                                     timer: 1500
+//                                 })
+//                             }
+//                         })
+//                 })
+//                 .catch(error => console.log(error))
+//             // navigate('/');
+//         })
+// };
+
+
+const onSubmit = data => {
+  console.log(data);
+  createUser(data.email, data.password)
+      .then(result => {
+          const loggedUser = result.user;
+          updateUserProfile(data.name, data.photoURL)
+              .then(() => {
+                  // create user entry in the database  
+                  const userInfo = {
+                      name: data.name,
+                      email: data.email
+                  };
+                  axiosPublic.post('/users', userInfo, {
+                      headers: { 'Content-Type': 'application/json' }
+                  })
+                      .then(res => {
+                          if (res.data.insertedId) {
+                              reset();
+                              console.log('User created successfully');
+                              Swal.fire({
+                                  position: 'top-end',
+                                  icon: 'success',
+                                  title: 'User created successfully',
+                                  showConfirmButton: false,
+                                  timer: 1500
+                              });
+                          } else {
+                              console.log('User creation failed:', res.data);
+                          }
+                      })
+                      .catch(error => console.error('Axios error:', error));
+              })
+              .catch(error => console.error('Update profile error:', error));
+      })
+      .catch(error => console.error('Create user error:', error));
+};
+
+
+
 
   return (
     <div className="hero card min-h-screen bg-base-200">
