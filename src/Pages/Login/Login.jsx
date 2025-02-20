@@ -1,12 +1,53 @@
+import { useContext } from "react";
 import "./Login.css";
+import { AuthContext } from "../../Providers/AuthProvider";
+import Swal from "sweetalert2";
+
+
 
 const Login = () => {
-    const handleLogin = (e) => {
+    const { user, singIn } = useContext(AuthContext)
+
+
+    const handleLogin = async(e) => {
         e.preventDefault();
         const form = e.target;
         const email = form.email.value.trim();
         const password = form.password.value.trim();
-        console.log(email,password)
+        console.log(email, password)
+        
+        if (!email || !password) {
+            Swal.fire({
+                icon: 'error',
+                title: 'Error',
+                text: 'Email and password are required.',
+            });
+            return;
+        }
+
+        try {
+            const result = await singIn(email, password);
+            Swal.fire({
+                icon: 'success',
+                title: 'Login Successful',
+                showClass: {
+                    popup: 'animate__animated animate__fadeInDown',
+                },
+                hideClass: {
+                    popup: 'animate__animated animate__fadeOutUp',
+                },
+            });
+            // navigate(from ?? '/');
+
+            // navigate(from, { replace: true });
+
+        } catch (error) {
+            Swal.fire({
+                icon: 'error',
+                title: 'Login Failed',
+                text: error.message || 'Something went wrong. Please try again.',
+            });
+        }
     };
 
     return (

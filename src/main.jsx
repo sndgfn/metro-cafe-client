@@ -8,15 +8,27 @@ import {
 import { router } from './Routes/Routes';
 import AuthProvider from './Providers/AuthProvider';
 
+import {
+  QueryClient,
+  QueryClientProvider,
+  useQuery,
+} from '@tanstack/react-query'
+
+const queryClient = new QueryClient()
+
 
 createRoot(document.getElementById('root')).render(
   <div className='max-w-screen-xl mx-auto'>
 
-    <AuthProvider> 
-      <StrictMode>
-        <RouterProvider router={router} />
-      </StrictMode>
-    </AuthProvider>
+    
+    <QueryClientProvider client={queryClient}>
+      <AuthProvider>
+        <StrictMode>
+          <RouterProvider router={router} />
+        </StrictMode>
+      </AuthProvider>
+    </QueryClientProvider>
+
 
   </div>
 
